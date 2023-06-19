@@ -253,40 +253,34 @@ void NFA::calcNFA()
                 cout << "  Symbol: " << curr;
             }
 
-            for (auto i : nfaStates)
+            for (auto state : nfaStates)
             {
 
-                for (auto state : transitions)
+                for (auto transition : transitions)
                 {
-                    nfaStates
-                    int symbol = get<2>(state);
-                    string next;
+                    string current_state = get<0>(transition);
+                    string next_state = get<1>(transition);
+                    char symbol = get<2>(transition);
 
-                    if (i == get<0>(state))
+                    if (current_state == state && symbol == curr)
                     {
-
-                        if (curr == symbol)
+                        if (next_state != current_state)
                         {
-                            next = get<1>(state);
-                            // cout << "added: " << get<1>(state) << endl;
-                            if (next != get<0>(state))
+                            if (find(nfaStates.begin(), nfaStates.end(), next_state) == nfaStates.end())
                             {
-                                nfaStates.push_back(next);
+                                nfaNextStates.push_back(next_state); // Append the next state to the list of states.
+                                cout << "added: " << next_state << endl;
+                            }
+                            else{
+                                nfaNextStates.push_back(next_state);
                             }
                         }
                     }
                 }
-            }
-
-            if (getVerboseFlag())
-            {
-                cout << "  New State(s): ";
-                for (auto i : nfaStates)
-                {
-                    cout << i << " ";
-                }
                 cout << endl;
-            }
+                
+            }nfaStates = nfaNextStates;
+                nfaNextStates.clear();
         }
         cout << input;
 

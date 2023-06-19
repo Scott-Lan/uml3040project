@@ -73,7 +73,7 @@ public:
 private:
     vector<string> nfaStates;
     string nfaFile;
-    vector<string> nfaCurrentStates;
+    vector<string> nfaNextStates;
 };
 
 // DFA class definition
